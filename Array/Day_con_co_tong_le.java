@@ -1,56 +1,72 @@
 import java.util.*;
 
 public class Day_con_co_tong_le {
-    static int ok = 1;
+
+    static class CompareHandle implements Comparator<List<Integer>> {
+        @Override
+        public int compare(List<Integer> list1, List<Integer> list2) {
+            int size = Math.min(list1.size(), list2.size());
+
+            for (int i = 0; i < size; i++) {
+                int element1 = list1.get(i);
+                int element2 = list2.get(i);
+
+                if (element1 != element2) {
+                    return Integer.compare(element1, element2);
+                }
+            }
+
+            return Integer.compare(list1.size(), list2.size());
+        }
+    }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int t = scanner.nextInt();
-        Set<String> vt = new TreeSet<String>();
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
         while (t-- > 0) {
-            ok = 1;
-            vt.clear();
-            int n = scanner.nextInt();
-            int[] arr = new int[n + 1];
-            int[] b = new int[n + 1];
-            for (int i = 1; i <= n; i++) {
-                arr[i] = scanner.nextInt();
-                b[i] = 0;
-            }
-            while (ok == 1) {
-                int sum = 0;
-                sinh(b, n);
-                for (int i = 1; i <= n; i++) {
-                    if (b[i] == 1) sum += arr[i];
+            int n = sc.nextInt();
+            List<Integer> arr = new ArrayList<>();
+            for(int i = 0; i < n; i++) arr.add(sc.nextInt());
+           Collections.sort(arr, Collections.reverseOrder());
+            List<List<Integer>> ans = handle(arr, sum(arr));
+ 
+            Collections.sort(ans, new CompareHandle());
+            for (List<Integer> it : ans) {
+                for (int it1 : it) {
+                    System.out.print(it1 + " ");
                 }
-                if (sum % 2 == 1) {
-                    List<Integer> vec = new ArrayList<>();
-                    for (int i = 1; i <= n; i++) {
-                        if (b[i] == 1) vec.add(arr[i]);
-                    }
-                    Collections.sort(vec, Collections.reverseOrder());
-                    String s = "";
-                    for(Integer it:vec){
-                        s+=it.toString() + " ";
-                    }
-                    vt.add(s);
-                }
-            } 
-
-            for (String vec : vt) {
-                System.out.println(vec);
+                System.out.println();
             }
+        }
 
+    }
+
+    public static List<List<Integer>> handle(List<Integer> arr, int targetSum) {
+        List<List<Integer>> subsequences = new ArrayList<>();
+        backtrack(arr, 0, 0, targetSum, new ArrayList<>(), subsequences);
+        return subsequences;
+    }
+
+    public static int sum(List<Integer> arr) {
+        int sum = 0;
+        for (int num : arr) sum += num;
+        return sum;
+    }
+
+    public static void backtrack(List<Integer> arr, int start, int currentSum, int targetSum,
+                                 List<Integer> currentSequence, List<List<Integer>> subsequences) {
+        if ((currentSum%2)==1) {
+            subsequences.add(new ArrayList<>(currentSequence));
+        }
+
+        for (int i = start; i < arr.size(); i++) {
+            int num = arr.get(i);
+            if (currentSum + num <= targetSum) {
+                currentSequence.add(num);
+                backtrack(arr, i + 1, currentSum + num, targetSum, currentSequence, subsequences);
+                currentSequence.remove(currentSequence.size() - 1);
+            }
         }
     }
 
-    private static void sinh(int[] b, int n) {
-        int i = n;
-        while (i > 0 && b[i] == 1) {
-            b[i] = 0;
-            i--;
-        }
-        if (i == 0) ok = 0;
-        else b[i] = 1;
-    }
 }

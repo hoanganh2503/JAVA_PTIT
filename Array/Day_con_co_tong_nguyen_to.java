@@ -1,65 +1,85 @@
 import java.util.*;
+
 public class Day_con_co_tong_nguyen_to {
-    static Set<String> ans = new TreeSet<>();
-    public static void main(String[] args){  
+
+    static class CompareHandle implements Comparator<List<Integer>> {
+        @Override
+        public int compare(List<Integer> list1, List<Integer> list2) {
+            int size = Math.min(list1.size(), list2.size());
+
+            for (int i = 0; i < size; i++) {
+                int element1 = list1.get(i);
+                int element2 = list2.get(i);
+
+                if (element1 != element2) {
+                    return Integer.compare(element1, element2);
+                }
+            }
+
+            return Integer.compare(list1.size(), list2.size());
+        }
+    }
+
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int t = sc.nextInt();
-        while(t-->0){
-            ans.clear();
+        while (t-- > 0) {
             int n = sc.nextInt();
-            int arr[] = new int[n+1];
-            int a[] = new int[n+1];
-            for(int i=1; i<=n; i++) {
-                arr[i] = sc.nextInt();
-            }
-            for(int k = 1; k <= n; k++) {
-                for(int i=0; i<=n; i++) {
-                    a[i] =i;
+            List<Integer> arr = new ArrayList<>();
+            for(int i = 0; i < n; i++) arr.add(sc.nextInt());
+           Collections.sort(arr, Collections.reverseOrder());
+            List<List<Integer>> ans = handle(arr, sum(arr));
+ 
+            Collections.sort(ans, new CompareHandle());
+            for (List<Integer> it : ans) {
+                for (int it1 : it) {
+                    System.out.print(it1 + " ");
                 }
-                handle1(a, arr, n, k);
+                System.out.println();
             }
-            for(String it:ans) System.out.println(it);            
         }
 
     }
 
-    static void handle1(int[] arr, int a[], int n, int k){
-        boolean check = true;
-        show1(arr, a,  k);
-        while(check){
-            int l = k;
-            while(arr[l] == n-k+l && l >0) l--;
-            if(l > 0){
-                arr[l]++;
-                for(int j = l+1; j <= k ; j++){
-                    arr[j] = arr[j-1]+1;
-                }
-                show1(arr, a, k);
-            }
-            else check = false;
-        }
+    public static List<List<Integer>> handle(List<Integer> arr, int targetSum) {
+        List<List<Integer>> subsequences = new ArrayList<>();
+        backtrack(arr, 0, 0, targetSum, new ArrayList<>(), subsequences);
+        return subsequences;
     }
-    static void show1(int arr[], int a[],  int k) {
-        String s = "";
+
+    public static int sum(List<Integer> arr) {
         int sum = 0;
-        int temp[] = new int[k+1];
-        for(int i = 1 ; i <= k ; i++){
-            sum += a[arr[i]];
-            temp[i] = a[arr[i]];
-        }
-        Arrays.sort(temp);
-        for(int i = k ; i >=1 ; i--){
-            s += temp[i] + " ";
-        }
-        if(snt(sum)) ans.add(s);
+        for (int num : arr) sum += num;
+        return sum;
     }
-    static boolean snt(int n) {
-        if(n < 2) return false;
-        if(n == 2) return true;
-        if(n % 2 == 0) return false;
-        for(int i = 3 ; i <=Math.sqrt(n) ; i+=2){
-            if(n%i == 0) return false;
+
+    public static void backtrack(List<Integer> arr, int start, int currentSum, int targetSum,
+                                 List<Integer> currentSequence, List<List<Integer>> subsequences) {
+        if (isPrime(currentSum)) {
+            subsequences.add(new ArrayList<>(currentSequence));
         }
+
+        for (int i = start; i < arr.size(); i++) {
+            int num = arr.get(i);
+            if (currentSum + num <= targetSum) {
+                currentSequence.add(num);
+                backtrack(arr, i + 1, currentSum + num, targetSum, currentSequence, subsequences);
+                currentSequence.remove(currentSequence.size() - 1);
+            }
+        }
+    }
+
+    public static boolean isPrime(int number) {
+        if (number <= 1) {
+            return false;
+        }
+
+        for (int i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i == 0) {
+                return false;
+            }
+        }
+
         return true;
     }
 }
