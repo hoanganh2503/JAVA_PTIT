@@ -12,21 +12,37 @@ public class Khoang_cach_nho_hon_k {
             for(int i = 0; i < n; i++){
                 arr[i] = sc.nextInt();
             }
-            System.out.println(handle(arr, n, k));
+            Arrays.sort(arr);
+            long res=0;
+            for(int i =0 ; i<n-1; i++){
+                int ans = handle1(arr,n,i+1,n-1,arr[i]+k-1);
+                res+= ans-i-1;
+            }
+            System.out.println(res);
         }
     }
 
     static int handle(int arr[], int n, int k){
         Arrays.sort(arr);
         int ans = 0;    
-        for(int i = 0; i < n; i++){
-            int val = arr[i]+k;
-            int y = Arrays.binarySearch(arr, val);
-            if(y < 0){  
-                y = -(y + 1);
-            }
-            ans += (y-i-1);
+        for(int i = 0; i < n -1 ; i++){
+            int a = handle1(arr,n,i+1,n-1,arr[i]+k-1);
+            ans+= a-i-1;
         }
         return ans;
+    }
+
+    static int handle1(int arr[], int n, int l, int r, int x){
+        int res=n;
+        while(l<=r){
+            int mid = (l+r)/2;
+            if(arr[mid] > x){
+                res=mid;
+                r=mid-1;
+            }else{
+                l= mid+1;
+            }
+        }
+        return res;
     }
 }

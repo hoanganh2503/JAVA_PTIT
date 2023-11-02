@@ -1,5 +1,7 @@
 package Bang_diem_tuyen_sinh;
 import java.util.*;
+
+import Danh_sach_trung_tuyen.HS;
 public class Main {
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
