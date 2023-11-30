@@ -1,37 +1,31 @@
-package Hoa_don_2;
+package Quan_ly_ban_hang_1;
 import java.util.*;
-
-import Quan_ly_ban_hang_2.KH;
-import Quan_ly_ban_hang_2.MH;
-
-import java.io.*;
 import java.text.DecimalFormat;
 public class Main {
-    public static void main(String[] args) throws IOException {
-        Scanner kh = new Scanner(new File("KH.in"));
-        Scanner mh = new Scanner(new File("MH.in"));
-        Scanner hd = new Scanner(new File("HD.in"));
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
         DecimalFormat df1 = new DecimalFormat("KH000");
         DecimalFormat df2 = new DecimalFormat("MH000");
         DecimalFormat df3 = new DecimalFormat("HD000");
-        int a = kh.nextInt();
-        kh.nextLine();
+        int a = sc.nextInt();
+        sc.nextLine();
         KH kh1[] = new KH[a];
-        for(int i = 0; i < a; i++) kh1[i] = new KH(df1.format(i+1), kh.nextLine(), kh.nextLine(), kh.nextLine(), kh.nextLine());
+        for(int i = 0; i < a; i++) kh1[i] = new KH(df1.format(i+1), sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine());
         
-        int b = mh.nextInt();
+        int b = sc.nextInt();
         MH mh1[] = new MH[b];
         for(int i = 0; i < b; i++){
-            mh.nextLine();
-            mh1[i] = new MH(df2.format(i+1), mh.nextLine(), mh.nextLine(), mh.nextInt(), mh.nextInt());
+            sc.nextLine();
+            mh1[i] = new MH(df2.format(i+1), sc.nextLine(), sc.nextLine(), sc.nextInt(), sc.nextInt());
         }
         
-        int t = hd.nextInt();
+        int t = sc.nextInt();
         for(int i = 0 ; i < t ; i++){
-            hd.nextLine();
-            String maKH = hd.next().trim();
-            String maHD = hd.next().trim();
-            int sl = hd.nextInt();
+            sc.nextLine();
+            String maKH = sc.next().trim();
+            String maHD = sc.next().trim();
+            int sl = sc.nextInt();
 
             for(KH it1:kh1){
                 if(it1.getMa().equals(maKH)){
@@ -45,6 +39,8 @@ public class Main {
                     }
                 }
             }
+
         }
+
     }
 }

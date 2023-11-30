@@ -1,26 +1,31 @@
-import java.io.*;
 import java.util.*;
-public class So_thuan_nghich_trong_file {
-    public static void main(String[] args) throws IOException, ClassNotFoundException{
+import java.io.*;
+public class Bt1 {
+    public static void main(String[] args) throws IOException , ClassNotFoundException{
         ObjectInputStream sc1 = new ObjectInputStream(new FileInputStream("DATA1.in"));
         ObjectInputStream sc2 = new ObjectInputStream(new FileInputStream("DATA2.in"));
-
         ArrayList<Integer> list1 = (ArrayList<Integer>) sc1.readObject();
         ArrayList<Integer> list2 = (ArrayList<Integer>) sc2.readObject();
-
-        Set<Integer> set1 = new TreeSet<>(list1);
-        Set<Integer> set2 = new TreeSet<>(list2);
-
-        ArrayList<Integer> ans = new ArrayList<>();
-        
-        for(int it:set1){
-            if(set2.contains(it) && check(it)) ans.add(it);
-            if(ans.size() == 10) break;
+        ArrayList<Integer> list3 = new ArrayList<Integer>();
+        Set<Integer> set = new TreeSet<>();
+        for(int it:list1){
+            set.add(it);
+            list3.add(it);
         }
-
-        for (int it : ans)
-        System.out.println(it + " " + (Collections.frequency(list1, it) + Collections.frequency(list2, it)));
-
+        for(int it:list2){
+            set.add(it);
+            list3.add(it);
+        }
+        int cnt = 0;
+        for(int it:set){
+            if(list1.contains(it) && list2.contains(it) && check(it)){
+                System.out.println(it + " " + Collections.frequency(list3, it));
+                cnt++;
+            }
+            if(cnt == 10) break;
+        }
+        // int str = 1357531;
+        // System.out.println(check(str));
     }
 
     public static boolean check(int n){

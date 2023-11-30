@@ -5,9 +5,13 @@
             int t = sc.nextInt();
             sc.nextLine();
             Set<String> noname = new HashSet<String>();
+            Set<String> set = new LinkedHashSet<String>();
             while(t-->0){
                 String str = sc.nextLine();
-                String ans[] = str.replaceAll("\\s\\s+", " ").trim().toLowerCase().split(" ");
+                set.add(str.replaceAll("\\s\\s+", " ").trim().toLowerCase());
+            }
+            for(String it:set){
+                String ans[] = it.split(" ");
                 String res = "";
                 res+=ans[ans.length-1];
                 for(int i = 0 ; i < ans.length-1 ; i++){ 
